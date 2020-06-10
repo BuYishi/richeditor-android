@@ -35,7 +35,7 @@ import java.util.Locale;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+@SuppressWarnings("unused")
 public class RichEditor extends WebView {
 
   public enum Type {
@@ -150,10 +150,10 @@ public class RichEditor extends WebView {
 
     int gravity = ta.getInt(0, NO_ID);
     switch (gravity) {
-      case Gravity.LEFT:
+      case Gravity.START:
         exec("javascript:RE.setTextAlign(\"left\")");
         break;
-      case Gravity.RIGHT:
+      case Gravity.END:
         exec("javascript:RE.setTextAlign(\"right\")");
         break;
       case Gravity.TOP:
