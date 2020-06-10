@@ -32,10 +32,9 @@ public final class Utils {
   }
 
   public static String toBase64(Bitmap bitmap) {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-    byte[] bytes = baos.toByteArray();
-
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+    byte[] bytes = os.toByteArray();
     return Base64.encodeToString(bytes, Base64.NO_WRAP);
   }
 
