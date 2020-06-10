@@ -99,13 +99,13 @@ public class RichEditor extends WebView {
     setHorizontalScrollBarEnabled(false);
     getSettings().setJavaScriptEnabled(true);
     setWebChromeClient(new WebChromeClient());
-    setWebViewClient(createWebviewClient());
+    setWebViewClient(createWebViewClient());
     loadUrl(SETUP_HTML);
 
     applyAttributes(context, attrs);
   }
 
-  protected EditorWebViewClient createWebviewClient() {
+  protected EditorWebViewClient createWebViewClient() {
     return new EditorWebViewClient();
   }
 
@@ -221,8 +221,8 @@ public class RichEditor extends WebView {
     super.setBackgroundColor(color);
   }
 
-  @Override public void setBackgroundResource(int resid) {
-    Bitmap bitmap = Utils.decodeResource(getContext(), resid);
+  @Override public void setBackgroundResource(int resId) {
+    Bitmap bitmap = Utils.decodeResource(getContext(), resId);
     String base64 = Utils.toBase64(bitmap);
     bitmap.recycle();
 
