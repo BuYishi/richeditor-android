@@ -1,1 +1,3 @@
-include ':sample', ':richeditor'
+include ':richeditor'
+include ':sample'
+rootProject.name = "richeditor-android"

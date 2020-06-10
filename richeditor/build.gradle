@@ -1,26 +1,32 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
-
-android {
-  compileSdkVersion COMPILE_SDK_VERSION as int
-  buildToolsVersion BUILD_TOOLS_VERSION
-
-  defaultConfig {
-    minSdkVersion MIN_SDK_VERSION as int
-    targetSdkVersion TARGET_SDK_VERSION as int
-    versionCode VERSION_CODE as int
-    versionName VERSION_NAME
-  }
+plugins {
+    id 'com.android.library'
 }
 
-publish {
-  userOrg = POM_DEVELOPER_ID
-  groupId = GROUP
-  artifactId = ARTIFACT_ID
-  publishVersion = VERSION_NAME
-  desc = POM_DESCRIPTION
-  website = POM_URL
-  bintrayUser = BINTRAY_USER
-  bintrayKey = BINTRAY_API_KEY
-  autoPublish = false
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
