@@ -269,11 +269,15 @@ public class RichEditor extends WebView {
         "}) ();";
     exec("javascript:" + jsCSSImport + "");
   }
-public void setEnterMultilineEnabled(boolean enabled){
-    if(enabled){
 
-    }
-}
+  /**启用或禁用回车多行
+   * @param enabled true表示启用；false表示禁用*/
+  public void setEnterMultilineEnabled(boolean enabled){
+      if(enabled){
+
+      }
+  }
+
   public void undo() {
     exec("javascript:RE.undo();");
   }
@@ -338,9 +342,12 @@ public void setEnterMultilineEnabled(boolean enabled){
   public void setIndent() {
     exec("javascript:RE.setIndent();");
   }
-public void firstLineIndent(){
-  exec("javascript:RE.firstLineIndent();");
-}
+
+  /**启用或取消首行缩进*/
+  public void firstLineIndent(){
+    exec("javascript:RE.getCursor();");
+  }
+
   public void setOutdent() {
     exec("javascript:RE.setOutdent();");
   }
