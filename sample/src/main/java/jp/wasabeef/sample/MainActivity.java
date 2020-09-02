@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         mPreview = findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(text -> mPreview.setText(text));
         mEditor.addJavascriptInterface(new Object() {
-            /**提供给js调用的接口，判断是否启用回车多行*/
+            /**todo, 提供给js调用的接口，判断是否启用回车多行*/
             @JavascriptInterface
             public boolean isEnterMultiline() {
                 Log.e(TAG, "isEnterMultiline() called");
@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }, "JsInterface");
         cbEnterMultiline = findViewById(R.id.cbEnterMultiline);
-        //是否启用回车多行的监听
+        //todo，是否启用回车多行的监听
         cbEnterMultiline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //启用回车多行
+                //todo，启用回车多行
                 mEditor.setEnterMultilineEnabled(isChecked);
             }
         });
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //首行缩进的实例
+        //todo，首行缩进的示例
         findViewById(R.id.action_indent).setOnClickListener(v -> mEditor.firstLineIndent());
 
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
