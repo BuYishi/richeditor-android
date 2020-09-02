@@ -14,18 +14,85 @@
  * limitations under the License.
  */
 
+
+
+var RE = {};
+
+RE.currentSelection = {
+    "startContainer": 0,
+    "startOffset": 0,
+    "endContainer": 0,
+    "endOffset": 0
+};
+
+/**
+ * 自动聚焦初始化编辑器 否者元素会出现问题
+ * @type {HTMLElement}
+ */
+RE.editor = document.getElementById('editor');
+RE.btn = document.getElementById('edit-btn');
+RE.checkbox = document.getElementById('checkbox');
+
+
 //! 新增  ↓
-var btn = document.getElementById('edit-btn');
-btn.onclick = function () {
-    inden();
-}
+RE.init = function () {
+    RE.editor.focus();
+    RE.editor.innerHTML = `<div><br/></div>`;
+    RE.btn.onclick = function () {
+        RE.getCursor();
+    };
+    RE.editor.onkeydown = function (e) {
+        // console.log();
+        if (e.keyCode === 13 && JsInterface.isEnterMultiline()) {
+            let a = window.getSelection();
+            let aDiv = document.createElement('div');
+            aDiv.innerHTML = '<br/>';
+            if (a.baseNode.innerHTML === '<br>') {
+                return;
+            }
+            a.baseNode.parentNode.parentNode.insertBefore(aDiv, a.baseNode.parentNode.nextSibling);
+            let range = a.getRangeAt(0);
+            range.setStartAfter(aDiv);
+            a.addRange(range);
+            // console.log(range);
+        }
+    };
+    RE.checkbox.checked = true;
+    RE.checkbox.onchange = function (e) {
+        let checked = e.target.checked;
+        let editBr = RE.editor.getElementsByTagName('div');
+        let divTeaxt = [];
+        for (let i = 0; i < editBr.length; i++) {
+            if (editBr[i].childNodes[0].nodeName === '#text') {
+                divTeaxt.push(editBr[i]);
+                if (document.querySelector('#checkbox').checked) {
+                    let aDiv = document.createElement('div');
+                    aDiv.innerHTML = '<br/>';
+                    divTeaxt.push(aDiv);
+                }
+
+            }
+        }
+        let aDiv = document.createElement('div');
+        aDiv.innerHTML = '<br/>';
+        divTeaxt.push(aDiv);
+        RE.editor.innerHTML = '';
+        divTeaxt.forEach(item => {
+            RE.editor.appendChild(item);
+        });
+
+    };
+};
+RE.init();
+
+
 
 /**
  * 多行进行递归 直到找出公共父级
  * @param baseNode 开始节点
  * @param extentNode 结束节点
  */
-getDom = function (baseNode, extentNode) {
+RE.getDom = function (baseNode, extentNode) {
     if (baseNode === extentNode) {
         let divs = baseNode.getElementsByTagName("div");
         let number = '0px';
@@ -45,7 +112,6 @@ getDom = function (baseNode, extentNode) {
             }
         }
     } else {
-        // console.log(baseNode.parentElement.localName, extentNode.parentElement.localName);
         let baseNodeParentElement = baseNode.parentElement;
         let extentNodeParentElement = extentNode.parentElement;
         if (baseNodeParentElement.localName === 'div') {
@@ -54,21 +120,20 @@ getDom = function (baseNode, extentNode) {
         if (extentNodeParentElement.localName === 'div') {
             extentNodeParentElement = extentNode;
         }
-        getDom(baseNodeParentElement, extentNodeParentElement);
+        RE.getDom(baseNodeParentElement, extentNodeParentElement);
     }
 };
-
 /**
- * 获取当前光标选择多行还是单行
+ * 获取当前光标选择多行还是单行 调用此方法即可
  * 如是多行进行递归找出公共的父级元素 ，把公共父级所有元素进行收缩
  */
-inden = function () {
-    editor = document.getElementsByTagName('div')
+RE.getCursor = function () {
+    editor = document.getElementsByTagName('div');
     blockquote = document.getElementsByTagName('blockquote')
-    var ed = document.getElementById('editor')
+    let ed = document.getElementById('editor');
     ed.focus()
 
-    var aa = document.execCommand("indent", false, null);
+    let aa = document.execCommand("indent", false, null);
 
     let a = window.getSelection();
 
@@ -79,75 +144,10 @@ inden = function () {
             a.baseNode.parentElement.style.textIndent = '32px';
         }
     } else {
-        getDom(a.baseNode.parentElement, a.extentNode.parentElement);
+        RE.getDom(a.baseNode.parentElement, a.extentNode.parentElement);
     }
 
 }
-
-//! 新增  ↑
-
-
-var RE = {};
-
-RE.currentSelection = {
-    "startContainer": 0,
-    "startOffset": 0,
-    "endContainer": 0,
-    "endOffset": 0
-};
-
-/**
- * 自动聚焦初始化编辑器 否者元素会出现问题
- * @type {HTMLElement}
- */
-RE.editor = document.getElementById('editor');
-RE.editor.focus()
-RE.editor.innerHTML = `<div><br/></div>`;
-
-//! 新增  ↓
-RE.editor.onkeydown = function (e) {
-    // console.log();
-     if (e.keyCode === 13 && JsInterface.isEnterMultiline()) {
-//    if (e.keyCode === 13 && document.querySelector('#checkbox').checked) {
-        let a = window.getSelection();
-        let aDiv = document.createElement('div');
-        aDiv.innerHTML = '<br/>';
-        if (a.baseNode.innerHTML === '<br>') {
-            return;
-        }
-        a.baseNode.parentNode.parentNode.insertBefore(aDiv, a.baseNode.parentNode.nextSibling);
-        let range = a.getRangeAt(0);
-        range.setStartAfter(aDiv);
-        a.addRange(range);
-        // console.log(range);
-    }
-};
-document.querySelector('#checkbox').checked = true;
-document.querySelector('#checkbox').onchange = function (e) {
-    let checked = e.target.checked;
-    let editBr = RE.editor.getElementsByTagName('div');
-    let divTeaxt = [];
-    for (let i = 0; i < editBr.length; i++) {
-        if (editBr[i].childNodes[0].nodeName === '#text') {
-            divTeaxt.push(editBr[i]);
-            if (document.querySelector('#checkbox').checked) {
-                let aDiv = document.createElement('div');
-                aDiv.innerHTML = '<br/>';
-                divTeaxt.push(aDiv);
-            }
-
-        }
-    }
-    let aDiv = document.createElement('div');
-    aDiv.innerHTML = '<br/>';
-    divTeaxt.push(aDiv);
-    RE.editor.innerHTML = '';
-    divTeaxt.forEach(item => {
-        RE.editor.appendChild(item);
-    });
-
-};
-
 //! 新增  ↑
 
 document.addEventListener("selectionchange", function () {
@@ -157,15 +157,15 @@ document.addEventListener("selectionchange", function () {
 // Initializations
 RE.callback = function () {
     window.location.href = "re-callback://" + encodeURI(RE.getHtml());
-}
+};
 
 RE.setHtml = function (contents) {
     RE.editor.innerHTML = decodeURIComponent(contents.replace(/\+/g, '%20'));
-}
+};
 
 RE.getHtml = function () {
     return RE.editor.innerHTML;
-}
+};
 
 RE.getText = function () {
     // var text = '<p color=#e2e2e2 /><p/>';
@@ -173,7 +173,7 @@ RE.getText = function () {
     // RE.getText(text);
 
     return RE.editor.innerText;
-}
+};
 
 RE.setBaseTextColor = function (color) {
     RE.editor.style.color = color;
@@ -200,11 +200,11 @@ RE.setBackgroundImage = function (image) {
 
 RE.setWidth = function (size) {
     RE.editor.style.minWidth = size;
-}
+};
 
 RE.setHeight = function (size) {
     RE.editor.style.height = size;
-}
+};
 
 RE.setTextAlign = function (align) {
     RE.editor.style.textAlign = align;
@@ -286,10 +286,6 @@ RE.setHeading = function (heading) {
 
 RE.setIndent = function () {
     document.execCommand('indent', false, null);
-}
-
-RE.firstLineIndent = function () {
-    inden();
 }
 
 RE.setOutdent = function () {
