@@ -1,8 +1,13 @@
 package jp.wasabeef.sample;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RichEditor mEditor;
     private TextView mPreview;
-
+    private CheckBox cbEnterMultiline;
+private static final String TAG=MainActivity.class.getName();
+    @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +39,24 @@ public class MainActivity extends AppCompatActivity {
 
         mPreview = findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(text -> mPreview.setText(text));
+        mEditor.addJavascriptInterface(new Object(){
+            @JavascriptInterface
+            public boolean isEnterMultiline(){
+                Log.e(TAG,"isEnterMultiline() called");
+                return cbEnterMultiline.isChecked();
+            }
+        },"JsInterface");
+        cbEnterMultiline = findViewById(R.id.cbEnterMultiline);
+        cbEnterMultiline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
 
+                }else {
+
+                }
+            }
+        });
         findViewById(R.id.action_undo).setOnClickListener(v -> mEditor.undo());
 
         findViewById(R.id.action_redo).setOnClickListener(v -> mEditor.redo());
@@ -81,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_indent).setOnClickListener(v -> mEditor.setIndent());
+        findViewById(R.id.action_indent).setOnClickListener(v -> mEditor.firstLineIndent());
 
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 

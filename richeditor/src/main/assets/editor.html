@@ -5,9 +5,29 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="normalize.css">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        blockquote {
+            margin: 0px !important;
+        }
+        .multiple {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 105px;
+        }
+        .multiple > input {
+            margin-left: 3px;
+            margin-top: 3px;
+
+        }
+    </style>
 </head>
 <body>
-<div id="editor" contenteditable="true"></div>
+<button value='Indent' id="edit-btn" style="margin:10px;">首行缩进</button>
+<div class="multiple">回车多行:<input type="checkbox" id="checkbox"/></div>
+
+<div id="editor" class="edit" contenteditable="true" designMode="On"></div>
 <script type="text/javascript" src="rich_editor.js"></script>
+<script src="../assets1/jquery-3.4.1.js"></script>
 </body>
 </html>

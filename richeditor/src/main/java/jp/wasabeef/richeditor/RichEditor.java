@@ -269,7 +269,11 @@ public class RichEditor extends WebView {
         "}) ();";
     exec("javascript:" + jsCSSImport + "");
   }
+public void setEnterMultilineEnabled(boolean enabled){
+    if(enabled){
 
+    }
+}
   public void undo() {
     exec("javascript:RE.undo();");
   }
@@ -334,7 +338,9 @@ public class RichEditor extends WebView {
   public void setIndent() {
     exec("javascript:RE.setIndent();");
   }
-
+public void firstLineIndent(){
+  exec("javascript:RE.firstLineIndent();");
+}
   public void setOutdent() {
     exec("javascript:RE.setOutdent();");
   }

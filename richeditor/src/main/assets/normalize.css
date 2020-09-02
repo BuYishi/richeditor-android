@@ -411,3 +411,6 @@ td,
 th {
   padding: 0;
 }
+p{
+  text-indent: 2;
+}
