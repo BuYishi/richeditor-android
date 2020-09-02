@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private RichEditor mEditor;
     private TextView mPreview;
     private CheckBox cbEnterMultiline;
-private static final String TAG=MainActivity.class.getName();
+    private static final String TAG = MainActivity.class.getName();
+
     @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +40,21 @@ private static final String TAG=MainActivity.class.getName();
 
         mPreview = findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(text -> mPreview.setText(text));
-        mEditor.addJavascriptInterface(new Object(){
+        mEditor.addJavascriptInterface(new Object() {
+            /**提供给js调用的接口，判断是否启用回车多行*/
             @JavascriptInterface
-            public boolean isEnterMultiline(){
-                Log.e(TAG,"isEnterMultiline() called");
+            public boolean isEnterMultiline() {
+                Log.e(TAG, "isEnterMultiline() called");
                 return cbEnterMultiline.isChecked();
             }
-        },"JsInterface");
+        }, "JsInterface");
         cbEnterMultiline = findViewById(R.id.cbEnterMultiline);
+        //是否启用回车多行的监听
         cbEnterMultiline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-
-                }else {
-
-                }
+                //启用回车多行
+                mEditor.setEnterMultilineEnabled(isChecked);
             }
         });
         findViewById(R.id.action_undo).setOnClickListener(v -> mEditor.undo());
@@ -105,6 +105,7 @@ private static final String TAG=MainActivity.class.getName();
             }
         });
 
+        //首行缩进的实例
         findViewById(R.id.action_indent).setOnClickListener(v -> mEditor.firstLineIndent());
 
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
